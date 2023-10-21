@@ -2,24 +2,26 @@ from libraries.setup import *
 from libraries.install_dependencies import *
 import libraries.constants as const
 
-###USER SETUP
-userOptions = []
-GetUserOptions(userOptions)
-if(userOptions[const.optionIndexFirstSetup]):
-    InstallDependencies()
-    print('////////////////////////////////////////////////////////////////\n////////////////////////////////////////////////////////////////')
-    print('Dependencies installed')
-    print('////////////////////////////////////////////////////////////////\n////////////////////////////////////////////////////////////////')
-if(userOptions[const.optionIndexNewNumber]):
-    print('To setup the new number follow the next steps:')
-    print('1. Go to https://telegram.me/BotFather and send the message "/newbot" to the chat')
-    print('2. Open the command prompt and type "telegram-send --configure"')
-    print('If the system does not recognise the command add your Python\\Script to PATH')
-    print('3. Continue here once the telegram configuration is successfully completed')
-    input('Press any key to continue')
-url = userOptions[const.optionIndexURL]
-print('Parsing started. You\'ll receive a notification when a change is detected.')
-###
+
+#TODO Old user setup, remove. Here for reference until new implementation
+# ###USER SETUP
+# userOptions = []
+# GetUserOptions(userOptions)
+# if(userOptions[const.optionIndexFirstSetup]):
+#     InstallDependencies()
+#     print('////////////////////////////////////////////////////////////////\n////////////////////////////////////////////////////////////////')
+#     print('Dependencies installed')
+#     print('////////////////////////////////////////////////////////////////\n////////////////////////////////////////////////////////////////')
+# if(userOptions[const.optionIndexNewNumber]):
+#     print('To setup the new number follow the next steps:')
+#     print('1. Go to https://telegram.me/BotFather and send the message "/newbot" to the chat')
+#     print('2. Open the command prompt and type "telegram-send --configure"')
+#     print('If the system does not recognise the command add your Python\\Script to PATH')
+#     print('3. Continue here once the telegram configuration is successfully completed')
+#     input('Press any key to continue')
+# url = userOptions[const.optionIndexURL]
+# print('Parsing started. You\'ll receive a notification when a change is detected.')
+# ###
 
 from bs4 import BeautifulSoup
 import time
@@ -42,16 +44,17 @@ def GetPageSource(p_userURL):
     time.sleep(5)
     pageSource = driver.page_source
     driver.close()
+    return pageSource
 
-def ParsePage():
-    page_source = GetPageSource(url)
+def ParsePage(p_userURL):
+    page_source = GetPageSource(p_userURL)
     soup = BeautifulSoup(page_source, 'html.parser')
     res = soup.find_all("h2", {"class": "listing-search-item__title"})
 
     while True:
         current_res = res
 
-        page_source = GetPageSource(url)
+        page_source = GetPageSource(p_userURL)
         soup = BeautifulSoup(page_source, 'html.parser')
         res = soup.find_all("h2", {"class": "listing-search-item__title"})
         highlighted = soup.find_all("span", {"class": "listing-label listing-label--featured"})
@@ -59,14 +62,14 @@ def ParsePage():
         if highlighted:
             comparisonIndex = 1
         else:
-            comparisonIndex = 1
+            comparisonIndex = 0
         if res:
             if (current_res[comparisonIndex] == res[comparisonIndex]):
                 time.sleep(25)
             else:
-                telegram_send.send(messages=["Change detected in your search: ", url])
+                telegram_send.send(messages=["Change detected in your search: ", p_userURL])
                 mytext = 'Nieuwe aanbieding gedetecteerd'
                 print(mytext)
-                print(url)
+                print(p_userURL)
 
                 time.sleep(25)
