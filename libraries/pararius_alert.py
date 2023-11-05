@@ -3,26 +3,6 @@ from libraries.install_dependencies import *
 import libraries.constants as const
 
 
-#TODO Old user setup, remove. Here for reference until new implementation
-# ###USER SETUP
-# userOptions = []
-# GetUserOptions(userOptions)
-# if(userOptions[const.optionIndexFirstSetup]):
-#     InstallDependencies()
-#     print('////////////////////////////////////////////////////////////////\n////////////////////////////////////////////////////////////////')
-#     print('Dependencies installed')
-#     print('////////////////////////////////////////////////////////////////\n////////////////////////////////////////////////////////////////')
-# if(userOptions[const.optionIndexNewNumber]):
-#     print('To setup the new number follow the next steps:')
-#     print('1. Go to https://telegram.me/BotFather and send the message "/newbot" to the chat')
-#     print('2. Open the command prompt and type "telegram-send --configure"')
-#     print('If the system does not recognise the command add your Python\\Script to PATH')
-#     print('3. Continue here once the telegram configuration is successfully completed')
-#     input('Press any key to continue')
-# url = userOptions[const.optionIndexURL]
-# print('Parsing started. You\'ll receive a notification when a change is detected.')
-# ###
-
 from bs4 import BeautifulSoup
 import time
 from gtts import gTTS
