@@ -1,23 +1,12 @@
 from libraries.pararius_alert import ParsePage
+from libraries.file_management import *
 import PySimpleGUI as sg
-
-def store_last_session_data(searchResults):
-    with open('previousSearchResults.txt', 'w') as file:
-        file.write(searchResults)
 
 def main():
     sg.theme('SystemDefaultForReal')
 
     url_input = sg.InputText(key='-URL-', size=(60, 1))
-    token_input = sg.InputText(key='-PHONE-', size=(60, 1))
     
-    # # Load the saved phone number from a text file if it exists
-    # try:
-    #     with open('phone_number.txt', 'r') as file:
-    #         phone = file.read()
-    #         phone_input.update(phone)
-    # except FileNotFoundError:
-    #     phone = ''
 
     parseLayout = [
         [sg.Text('Enter URL:')],
@@ -66,13 +55,14 @@ def main():
             # window['-LOADING-'].update(visible=False)
             # window.refresh()
 
-            # Perform parsing here (you can replace this with your actual parsing function)
-            url = values['-URL-']
-            phone = values['-PHONE-']
-            parse_result = ParsePage(url)
-
-            # Show the parsing result in a popup (replace with your specific output)
-            sg.popup(f'Parsing Result: {parse_result}')
+            previousUrl = loadFileContent("previousUrl.txt")
+            if values['-URL-'] == '' and previousUrl != '':
+                url_input.update(loadFileContent("previousUrl.txt"))
+                url = previousUrl
+            else:
+                url = values['-URL-']
+                storeFile('previousUrl.txt', url)
+            ParsePage(url)
 
     window.close()
 
