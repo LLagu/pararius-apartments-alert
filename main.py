@@ -1,6 +1,7 @@
 from libraries.pararius_alert import ParsePage
 from libraries.file_management import *
 import PySimpleGUI as sg
+import asyncio
 
 def main():
     sg.theme('SystemDefaultForReal')
@@ -13,6 +14,8 @@ def main():
         [url_input],
         [sg.Button('Parse', key='-PARSE-')],
         [sg.Image(data=sg.DEFAULT_BASE64_LOADING_GIF, key='-LOADING-', visible=False)],
+        [sg.Multiline(size=(60,15), font='Courier 8', expand_x=True, expand_y=True, write_only=True,
+                                    reroute_stdout=True, reroute_stderr=True, echo_stdout_stderr=True, autoscroll=True, auto_refresh=True)],
         [sg.Button('Cancel')]
     ]
 
@@ -43,29 +46,33 @@ def main():
     while True:
         event, values = window.read()
 
+        isParsing = False
+
         if event == sg.WIN_CLOSED or event == 'Cancel': # if user closes window or clicks cancel
+            isParsing = False
             break
 
         if event == '-PARSE-':
-            # Show loading icon
-            window['-LOADING-'].update(visible=True)
-            window.refresh()
-
-            # Hide loading icon
-            # window['-LOADING-'].update(visible=False)
-            # window.refresh()
+            print("Parsing started")
 
             previousUrl = loadFileContent("previousUrl.txt")
             if values['-URL-'] == '' and previousUrl != '':
+                print("Using the url from the previous session")
                 url_input.update(loadFileContent("previousUrl.txt"))
                 url = previousUrl
             else:
                 url = values['-URL-']
                 storeFile('previousUrl.txt', url)
-            ParsePage(url)
+            isParsing = True
+        
+        if isParsing:
+            print("DEBUG: New parsing call")
+            loop = asyncio.get_event_loop()
+            loop.run_until_complete(ParsePage(url))
 
     window.close()
 
 if __name__ == '__main__':
     main()
+
 

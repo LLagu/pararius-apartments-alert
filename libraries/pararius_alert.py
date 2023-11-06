@@ -1,6 +1,5 @@
 from libraries.setup import *
 from libraries.install_dependencies import *
-import libraries.constants as const
 
 
 from bs4 import BeautifulSoup
@@ -11,6 +10,7 @@ import telegram_send
 from selenium import webdriver
 from selenium.webdriver.firefox.options import Options
 import warnings
+import asyncio
 
 def GetPageSource(p_userURL):
     options = Options()
@@ -21,13 +21,20 @@ def GetPageSource(p_userURL):
         warnings.filterwarnings("ignore",category=DeprecationWarning)
         driver = webdriver.Firefox(options=options)
     driver.get(p_userURL)
+    #TODO: eventually replace the sleep with a control that lets the function proceed once
+    # the page is fully loaded
     time.sleep(5)
     pageSource = driver.page_source
     driver.close()
     return pageSource
 
+async def sendTelegramNotification(p_userURL):
+    await telegram_send.send(messages=["Change detected in your search: ", p_userURL])
+
 def ParsePage(p_userURL):
+    
     page_source = GetPageSource(p_userURL)
+    print("Getting the page source")
     soup = BeautifulSoup(page_source, 'html.parser')
     res = soup.find_all("h2", {"class": "listing-search-item__title"})
 
@@ -44,12 +51,18 @@ def ParsePage(p_userURL):
         else:
             comparisonIndex = 0
         if res:
-            if (current_res[comparisonIndex] == res[comparisonIndex]):
+            print("Looking for changes")
+            if (current_res[comparisonIndex] == res[comparisonIndex + 1 ]): #+1 is for testing purposes, to be removed
                 time.sleep(25)
             else:
-                telegram_send.send(messages=["Change detected in your search: ", p_userURL])
+                #send notification
+                loop = asyncio.get_event_loop()
+                loop.run_until_complete(sendTelegramNotification(p_userURL))
+                
+                #for logging purposes
                 mytext = 'Nieuwe aanbieding gedetecteerd'
                 print(mytext)
                 print(p_userURL)
 
                 time.sleep(25)
+    
