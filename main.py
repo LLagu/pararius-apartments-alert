@@ -7,6 +7,7 @@ def main():
     sg.theme('SystemDefaultForReal')
 
     url_input = sg.InputText(key='-URL-', size=(60, 1))
+    msg_input = [sg.Multiline(size=(60, 15), key='-MSG-', autoscroll=True, auto_refresh=True)]
 
     parseLayout = [
         [sg.Text('Enter URL:')],
@@ -27,12 +28,19 @@ def main():
         [sg.Text('Please visit the project\'s github page or the About section in the app to learn more about the app and it\'s limitations')]
     ]
 
+    messageLayout = [
+        [sg.Text('Insert your message to broker. It will be sent as part of the notification so that you can copy and paste it quickly.')],
+        [sg.Text('Leave it blank if you don\'t want to use this feature')],
+        msg_input
+    ]
+
     aboutLayout = [
         [sg.Text('TODO About page')]
     ]
 
     layout = [[sg.TabGroup([[  sg.Tab('Parse', parseLayout),
                                sg.Tab('How to setup Telegram', telegramLayout),
+                               sg.Tab('Custom Message', messageLayout),
                                sg.Tab('About', aboutLayout)
                             ]], key='-TAB GROUP-', expand_x=True, expand_y=True),
                ]]
@@ -53,15 +61,24 @@ def main():
 
             previousUrl = loadFileContent("previousUrl.txt")
             if values['-URL-'] == '' and previousUrl != '':
-                print("Using the url from the previous session")
+                # print("Using the url from the previous session")
                 url_input.update(loadFileContent("previousUrl.txt"))
                 url = previousUrl
             else:
                 url = values['-URL-']
                 storeFile('previousUrl.txt', url)
 
+            previousMsg = loadFileContent("previousMsg.txt")
+            if values['-MSG-'] == '' and previousMsg != '':
+                # print("Using the message to broker from the previous session")
+                msg_input[0].update(loadFileContent("previousMsg.txt"))
+                msg = previousMsg
+            else:
+                msg = values['-MSG-']
+                storeFile('previousMsg.txt', msg)
+
             if thread is None:
-                thread = Thread(target=ParsePage, args=(url,))
+                thread = Thread(target=ParsePage, args=(url, msg))
                 thread.daemon = True
                 thread.start()
             

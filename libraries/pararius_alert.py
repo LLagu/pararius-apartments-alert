@@ -26,10 +26,12 @@ def GetPageSource(p_userUrl):
     driver.close()
     return pageSource
 
-async def sendTelegramNotification(p_userUrl):
-    await telegram_send.send(messages=["Change detected in your search: ", p_userUrl])
-
-def ParsePage(p_userUrl):
+async def sendTelegramNotification(p_userUrl, p_messageToTheBroker):
+    if p_messageToTheBroker != "":
+        await telegram_send.send(messages=["Change detected in your search: ", p_userUrl])
+    else:
+        await telegram_send.send(messages=["Change detected in your search: ", p_userUrl, p_messageToTheBroker])
+def ParsePage(p_userUrl, p_messageToTheBroker):
 
 
     loop = asyncio.new_event_loop() 
@@ -39,6 +41,8 @@ def ParsePage(p_userUrl):
     page_source = GetPageSource(p_userUrl)
     soup = BeautifulSoup(page_source, 'html.parser')
     res = soup.find_all("h2", {"class": "listing-search-item__title"})
+
+    TEST_i = 0
 
     while True:
         current_res = res
@@ -53,17 +57,18 @@ def ParsePage(p_userUrl):
         else:
             comparisonIndex = 0
         if res:
-            print("Looking for changes")
+            # print("Looking for changes")
+            if TEST_i == 0:
+                print("Looking for changes. Stand by and wait for a notification")
             if (current_res[comparisonIndex] == res[comparisonIndex]):
                 time.sleep(25)
             else:
                 #send notification
                 loop = asyncio.get_event_loop()
-                loop.run_until_complete(sendTelegramNotification(p_userUrl))
+                loop.run_until_complete(sendTelegramNotification(p_userUrl, p_messageToTheBroker))
 
                 #for logging purposes
-                mytext = 'Nieuwe aanbieding gedetecteerd'
-                print(mytext)
+                print('Nieuwe aanbieding gedetecteerd')
                 print(p_userUrl)
 
                 time.sleep(25)
