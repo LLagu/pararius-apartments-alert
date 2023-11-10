@@ -54,7 +54,7 @@ def ParsePage(p_userUrl):
             comparisonIndex = 0
         if res:
             print("Looking for changes")
-            if (current_res[comparisonIndex] == res[comparisonIndex + 1]):
+            if (current_res[comparisonIndex] == res[comparisonIndex]):
                 time.sleep(25)
             else:
                 #send notification
