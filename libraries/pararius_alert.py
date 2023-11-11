@@ -31,6 +31,15 @@ async def sendTelegramNotification(p_userUrl, p_messageToTheBroker):
         await telegram_send.send(messages=["Change detected in your search: ", p_userUrl])
     else:
         await telegram_send.send(messages=["Change detected in your search: ", p_userUrl, p_messageToTheBroker])
+
+def find_new_apartments(old_vacancies, updated_vacancies):
+    # Exclude the last element
+    if updated_vacancies and updated_vacancies[-1] not in old_vacancies:
+        updated_vacancies = updated_vacancies[:-1]
+
+    new_apartments = set(updated_vacancies) - set(old_vacancies)
+    return new_apartments
+
 def ParsePage(p_userUrl, p_messageToTheBroker):
 
 
@@ -50,17 +59,14 @@ def ParsePage(p_userUrl, p_messageToTheBroker):
         page_source = GetPageSource(p_userUrl)
         soup = BeautifulSoup(page_source, 'html.parser')
         res = soup.find_all("h2", {"class": "listing-search-item__title"})
-        highlighted = soup.find_all("span", {"class": "listing-label listing-label--featured"})
 
-        if highlighted:
-            comparisonIndex = 1
-        else:
-            comparisonIndex = 0
         if res:
-            # print("Looking for changes")
+  
             if TEST_i == 0:
                 print("Looking for changes. Stand by and wait for a notification")
-            if (current_res[comparisonIndex] == res[comparisonIndex]):
+                TEST_i += 1
+            
+            if (not find_new_apartments(res, current_res)):
                 time.sleep(25)
             else:
                 #send notification

@@ -61,7 +61,6 @@ def main():
 
             previousUrl = loadFileContent("previousUrl.txt")
             if values['-URL-'] == '' and previousUrl != '':
-                # print("Using the url from the previous session")
                 url_input.update(loadFileContent("previousUrl.txt"))
                 url = previousUrl
             else:
@@ -70,7 +69,6 @@ def main():
 
             previousMsg = loadFileContent("previousMsg.txt")
             if values['-MSG-'] == '' and previousMsg != '':
-                # print("Using the message to broker from the previous session")
                 msg_input[0].update(loadFileContent("previousMsg.txt"))
                 msg = previousMsg
             else:
