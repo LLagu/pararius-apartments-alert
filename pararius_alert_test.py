@@ -74,12 +74,13 @@ def parametrizedParsePage(p_pageSource1, p_pageSource2):
             print("Looking for changes. Stand by and wait for a notification")
             TEST_i += 1
         
-        if (not find_new_apartments(res, current_res)):
+        new_apartments = find_new_apartments(res, current_res)
+        if (not new_apartments):
             time.sleep(1)
         else:
             #send notification
             loop = asyncio.get_event_loop()
-            loop.run_until_complete(sendTelegramNotification("Test URL", "TEST message to the broker"))
+            loop.run_until_complete(sendTelegramNotification(new_apartments, "TEST message to the broker"))
 
             #for logging purposes
             print('Nieuwe aanbieding gedetecteerd')

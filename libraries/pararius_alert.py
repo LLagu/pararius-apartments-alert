@@ -25,19 +25,25 @@ def GetPageSource(p_userUrl):
     driver.close()
     return pageSource
 
-async def sendTelegramNotification(p_userUrl, p_messageToTheBroker):
-    if p_messageToTheBroker == "":
-        await telegram_send.send(messages=[("Change detected in your search: ", p_userUrl)])
-    else:
-        await telegram_send.send(messages=[("Change detected in your search: ", p_userUrl), p_messageToTheBroker])
+async def sendTelegramNotification(p_apartmentsList, p_messageToTheBroker):
+        for property in p_apartmentsList:
+            #By using the *property syntax, you are unpacking the elements of the property list, and they will be passed as separate arguments to the send function.
+            await telegram_send.send(messages=[("New property: ", *property)])
+        await telegram_send.send(messages=[(p_messageToTheBroker)])
 
 def find_new_apartments(old_vacancies, updated_vacancies):
+    ret = []
     # Exclude the last element
     if updated_vacancies and updated_vacancies[-1] not in old_vacancies:
         updated_vacancies = updated_vacancies[:-1]
 
     new_apartments = set(updated_vacancies) - set(old_vacancies)
-    return new_apartments
+    
+    for property in new_apartments:
+        name = property.find('a').get_text(strip=True)
+        href = property.find('a')['href']
+        ret.append((name, "https://www.pararius.nl" + href))
+    return ret
 
 def ParsePage(p_userUrl, p_messageToTheBroker):
     loop = asyncio.new_event_loop() 
@@ -54,7 +60,6 @@ def ParsePage(p_userUrl, p_messageToTheBroker):
         current_res = res
 
         page_source = GetPageSource(p_userUrl)
-        ###
         soup = BeautifulSoup(page_source, 'html.parser')
         res = soup.find_all("h2", {"class": "listing-search-item__title"})
 
@@ -64,12 +69,13 @@ def ParsePage(p_userUrl, p_messageToTheBroker):
                 print("Looking for changes. Stand by and wait for a notification")
                 TEST_i += 1
             
-            if (not find_new_apartments(res, current_res)):
+            new_apartments = find_new_apartments(res, current_res)
+            if (not new_apartments):
                 time.sleep(25)
             else:
                 #send notification
                 loop = asyncio.get_event_loop()
-                loop.run_until_complete(sendTelegramNotification(p_userUrl, p_messageToTheBroker))
+                loop.run_until_complete(sendTelegramNotification(new_apartments, p_messageToTheBroker))
 
                 #for logging purposes
                 print('Nieuwe aanbieding gedetecteerd')
