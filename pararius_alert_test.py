@@ -1,16 +1,24 @@
 from libraries.pararius_alert import *
 from libraries.file_management import *
 
+from bs4 import BeautifulSoup
+import time
+import telegram_send
+from selenium import webdriver
+from selenium.webdriver.firefox.options import Options
+import warnings
+import asyncio
+
 def TestWithRemovedElement():
     
     #Should not find any apartment
     EXPECTED_OUTPUT = 0
 
-    page_source = loadFileContent("pageSourceFull.txt")
+    page_source = loadFileContent("test/pageSourceFull.txt")
     soup = BeautifulSoup(page_source, 'html.parser')
     oldRes = soup.find_all("h2", {"class": "listing-search-item__title"})
 
-    page_source = loadFileContent("pageSourceTopElemRemoved.txt")
+    page_source = loadFileContent("test/pageSourceTopElemRemoved.txt")
     soup = BeautifulSoup(page_source, 'html.parser')
     currentRes = soup.find_all("h2", {"class": "listing-search-item__title"})
 
@@ -29,11 +37,11 @@ def TestWithNewElement():
     #Should find a new apartment
     EXPECTED_OUTPUT = 1
 
-    page_source = loadFileContent("pageSourceFull.txt")
+    page_source = loadFileContent("test/pageSourceFull.txt")
     soup = BeautifulSoup(page_source, 'html.parser')
     oldRes = soup.find_all("h2", {"class": "listing-search-item__title"})
 
-    page_source = loadFileContent("pageSourceNewElem.txt")
+    page_source = loadFileContent("test/pageSourceNewElem.txt")
     soup = BeautifulSoup(page_source, 'html.parser')
     currentRes = soup.find_all("h2", {"class": "listing-search-item__title"})
 
@@ -46,6 +54,41 @@ def TestWithNewElement():
 
     return TEST_OUTPUT == EXPECTED_OUTPUT
 
+def parametrizedParsePage(p_pageSource1, p_pageSource2):
+    loop = asyncio.new_event_loop() 
+    asyncio.set_event_loop(loop)
+
+    print("Getting the page source")
+    page_source = p_pageSource1
+    soup = BeautifulSoup(page_source, 'html.parser')
+    res = soup.find_all("h2", {"class": "listing-search-item__title"})
+
+    TEST_i = 0
+
+    #While True loop starts here in the actual function
+    current_res = res
+
+    page_source = p_pageSource2
+    soup = BeautifulSoup(page_source, 'html.parser')
+    res = soup.find_all("h2", {"class": "listing-search-item__title"})
+
+    if res:
+
+        if TEST_i == 0:
+            print("Looking for changes. Stand by and wait for a notification")
+            TEST_i += 1
+        
+        if (not find_new_apartments(res, current_res)):
+            time.sleep(1)
+        else:
+            #send notification
+            loop = asyncio.get_event_loop()
+            loop.run_until_complete(sendTelegramNotification("Test URL", "TEST message to the broker"))
+
+            #for logging purposes
+            print('Nieuwe aanbieding gedetecteerd')
+
+            time.sleep(1)
 
 def testMain():
     #TEST 1
@@ -53,4 +96,7 @@ def testMain():
     #TEST 2
     print("Test 2: ", TestWithNewElement())
 
+
+    #
+    parametrizedParsePage(loadFileContent("test/pageSourceFull.txt"), loadFileContent("test/pageSourceNewElem.txt"))
 testMain()

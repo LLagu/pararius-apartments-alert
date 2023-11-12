@@ -1,7 +1,6 @@
 from libraries.setup import *
 from libraries.install_dependencies import *
 
-
 from bs4 import BeautifulSoup
 import time
 import telegram_send
@@ -27,10 +26,10 @@ def GetPageSource(p_userUrl):
     return pageSource
 
 async def sendTelegramNotification(p_userUrl, p_messageToTheBroker):
-    if p_messageToTheBroker != "":
-        await telegram_send.send(messages=["Change detected in your search: ", p_userUrl])
+    if p_messageToTheBroker == "":
+        await telegram_send.send(messages=[("Change detected in your search: ", p_userUrl)])
     else:
-        await telegram_send.send(messages=["Change detected in your search: ", p_userUrl, p_messageToTheBroker])
+        await telegram_send.send(messages=[("Change detected in your search: ", p_userUrl), p_messageToTheBroker])
 
 def find_new_apartments(old_vacancies, updated_vacancies):
     # Exclude the last element
@@ -41,8 +40,6 @@ def find_new_apartments(old_vacancies, updated_vacancies):
     return new_apartments
 
 def ParsePage(p_userUrl, p_messageToTheBroker):
-
-
     loop = asyncio.new_event_loop() 
     asyncio.set_event_loop(loop)
 
@@ -57,6 +54,7 @@ def ParsePage(p_userUrl, p_messageToTheBroker):
         current_res = res
 
         page_source = GetPageSource(p_userUrl)
+        ###
         soup = BeautifulSoup(page_source, 'html.parser')
         res = soup.find_all("h2", {"class": "listing-search-item__title"})
 
@@ -78,4 +76,3 @@ def ParsePage(p_userUrl, p_messageToTheBroker):
                 print(p_userUrl)
 
                 time.sleep(25)
-    
