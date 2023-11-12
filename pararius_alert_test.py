@@ -3,10 +3,6 @@ from libraries.file_management import *
 
 from bs4 import BeautifulSoup
 import time
-import telegram_send
-from selenium import webdriver
-from selenium.webdriver.firefox.options import Options
-import warnings
 import asyncio
 
 def TestWithRemovedElement():

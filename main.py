@@ -30,12 +30,15 @@ def main():
 
     messageLayout = [
         [sg.Text('Insert your message to broker. It will be sent as part of the notification so that you can copy and paste it quickly.')],
-        [sg.Text('Leave it blank if you don\'t want to use this feature')],
+        [sg.Text('Leave it blank to use the previously inserted text')],
         msg_input
     ]
 
     aboutLayout = [
-        [sg.Text('TODO About page')]
+        [sg.Text('Scraping and notification application for pararius.nl\n')],
+        [sg.Text('Known issues and future updates:')],
+        [sg.Text('- Installation of the required python packages is manual or \nvia the script mentione above. Future updates will detect \nmissing libraries and install them automatically.\n')],
+        [sg.Text('- No cancel button implementation yet. To parse another url \nsimply paste the new one an the thread in the background \nwill pick it up, but the only way to not parse is to close the app')]
     ]
 
     layout = [[sg.TabGroup([[  sg.Tab('Parse', parseLayout),
