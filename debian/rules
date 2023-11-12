@@ -1,4 +1,9 @@
 #!/usr/bin/make -f
 
+export DH_COMPAT=12
+
 %:
-	dh $@ --with python-virtualenv --python /usr/bin/python3.8
+	dh $@ --with python-virtualenv --python /usr/bin/python3
+
+override_dh_auto_configure:
+	dh_auto_configure -- --buildsystem=pybuild --python=/usr/bin/python3
