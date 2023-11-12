@@ -1,0 +1,181 @@
+[<h2 class="listing-search-item__title">
+<a class="listing-search-item__link listing-search-item__link--title" data-action="click-&gt;listing-search-item#onClick" href="/appartement-te-huur/groningen/6c1ead71/delistraat">
+            
+            New apartment
+
+                            </a>
+</h2>, <h2 class="listing-search-item__title">
+<a class="listing-search-item__link listing-search-item__link--title" data-action="click-&gt;listing-search-item#onClick" href="/appartement-te-huur/groningen/b92089cd/chopinlaan">
+            
+            Appartement Chopinlaan 65
+
+                            </a>
+</h2>, <h2 class="listing-search-item__title">
+<a class="listing-search-item__link listing-search-item__link--title" data-action="click-&gt;listing-search-item#onClick" href="/appartement-te-huur/groningen/70540e46/oosterstraat">
+            
+            Appartement Oosterstraat 19 a21
+
+                            </a>
+</h2>, <h2 class="listing-search-item__title">
+<a class="listing-search-item__link listing-search-item__link--title" data-action="click-&gt;listing-search-item#onClick" href="/appartement-te-huur/groningen/e64a5613/lunettenhof">
+            
+            Appartement Lunettenhof
+
+                            </a>
+</h2>, <h2 class="listing-search-item__title">
+<a class="listing-search-item__link listing-search-item__link--title" data-action="click-&gt;listing-search-item#onClick" href="/appartement-te-huur/groningen/05721e9d/tweede-hunzestraat">
+            
+            Appartement Tweede Hunzestraat
+
+                            </a>
+</h2>, <h2 class="listing-search-item__title">
+<a class="listing-search-item__link listing-search-item__link--title" data-action="click-&gt;listing-search-item#onClick" href="/appartement-te-huur/groningen/1f1bf0f2/landstraat">
+            
+            Appartement Landstraat 4 a
+
+                            </a>
+</h2>, <h2 class="listing-search-item__title">
+<a class="listing-search-item__link listing-search-item__link--title" data-action="click-&gt;listing-search-item#onClick" href="/appartement-te-huur/groningen/00582a8b/gangboord">
+            
+            Appartement Gangboord 36
+
+                            </a>
+</h2>, <h2 class="listing-search-item__title">
+<a class="listing-search-item__link listing-search-item__link--title" data-action="click-&gt;listing-search-item#onClick" href="/appartement-te-huur/groningen/77e44e76/zwanestraat">
+            
+            Appartement Zwanestraat
+
+                            </a>
+</h2>, <h2 class="listing-search-item__title">
+<a class="listing-search-item__link listing-search-item__link--title" data-action="click-&gt;listing-search-item#onClick" href="/studio-te-huur/groningen/0d759b64/raamstraat">
+            
+            Studio Raamstraat 5 b
+
+                            </a>
+</h2>, <h2 class="listing-search-item__title">
+<a class="listing-search-item__link listing-search-item__link--title" data-action="click-&gt;listing-search-item#onClick" href="/appartement-te-huur/groningen/be521d56/hardewikerstraat">
+            
+            Appartement Hardewikerstraat
+
+                            </a>
+</h2>, <h2 class="listing-search-item__title">
+<a class="listing-search-item__link listing-search-item__link--title" data-action="click-&gt;listing-search-item#onClick" href="/studio-te-huur/groningen/7b598657/verlengde-oosterstraat">
+            
+            Studio Verlengde Oosterstraat 6 a
+
+                            </a>
+</h2>, <h2 class="listing-search-item__title">
+<a class="listing-search-item__link listing-search-item__link--title" data-action="click-&gt;listing-search-item#onClick" href="/huis-te-huur/groningen/1b3bbff5/edelsteenlaan">
+            
+            Huis Edelsteenlaan 3
+
+                            </a>
+</h2>, <h2 class="listing-search-item__title">
+<a class="listing-search-item__link listing-search-item__link--title" data-action="click-&gt;listing-search-item#onClick" href="/appartement-te-huur/groningen/b5190b4a/grote-kromme-elleboog">
+            
+            Appartement Grote Kromme Elleboog 16 b
+
+                            </a>
+</h2>, <h2 class="listing-search-item__title">
+<a class="listing-search-item__link listing-search-item__link--title" data-action="click-&gt;listing-search-item#onClick" href="/studio-te-huur/groningen/edfacc42/trompkade">
+            
+            Studio Trompkade
+
+                            </a>
+</h2>, <h2 class="listing-search-item__title">
+<a class="listing-search-item__link listing-search-item__link--title" data-action="click-&gt;listing-search-item#onClick" href="/appartement-te-huur/groningen/6828db26/van-iddekingeweg">
+            
+            Appartement Van Iddekingeweg
+
+                            </a>
+</h2>, <h2 class="listing-search-item__title">
+<a class="listing-search-item__link listing-search-item__link--title" data-action="click-&gt;listing-search-item#onClick" href="/appartement-te-huur/groningen/f26c0481/nieuwe-kijk-in-t-jatstraat">
+            
+            Appartement Nieuwe Kijk in 't Jatstraat 103
+
+                            </a>
+</h2>, <h2 class="listing-search-item__title">
+<a class="listing-search-item__link listing-search-item__link--title" data-action="click-&gt;listing-search-item#onClick" href="/appartement-te-huur/groningen/014eb262/eeldersingel">
+            
+            Appartement Eeldersingel 36 a
+
+                            </a>
+</h2>, <h2 class="listing-search-item__title">
+<a class="listing-search-item__link listing-search-item__link--title" data-action="click-&gt;listing-search-item#onClick" href="/appartement-te-huur/groningen/c0b81831/friesestraatweg">
+            
+            Appartement Friesestraatweg
+
+                            </a>
+</h2>, <h2 class="listing-search-item__title">
+<a class="listing-search-item__link listing-search-item__link--title" data-action="click-&gt;listing-search-item#onClick" href="/appartement-te-huur/groningen/5dbc2f5c/friesestraatweg">
+            
+            Appartement Friesestraatweg
+
+                            </a>
+</h2>, <h2 class="listing-search-item__title">
+<a class="listing-search-item__link listing-search-item__link--title" data-action="click-&gt;listing-search-item#onClick" href="/appartement-te-huur/groningen/d93c4e07/helper-kerkstraat">
+            
+            Appartement Helper Kerkstraat 3 c
+
+                            </a>
+</h2>, <h2 class="listing-search-item__title">
+<a class="listing-search-item__link listing-search-item__link--title" data-action="click-&gt;listing-search-item#onClick" href="/appartement-te-huur/groningen/92ce0c51/aduarderstraat">
+            
+            Appartement Aduarderstraat
+
+                            </a>
+</h2>, <h2 class="listing-search-item__title">
+<a class="listing-search-item__link listing-search-item__link--title" data-action="click-&gt;listing-search-item#onClick" href="/appartement-te-huur/groningen/2ea620d4/zaagmuldersweg">
+            
+            Appartement Zaagmuldersweg
+
+                            </a>
+</h2>, <h2 class="listing-search-item__title">
+<a class="listing-search-item__link listing-search-item__link--title" data-action="click-&gt;listing-search-item#onClick" href="/appartement-te-huur/groningen/a860f697/hoendiep">
+            
+            Appartement Hoendiep
+
+                            </a>
+</h2>, <h2 class="listing-search-item__title">
+<a class="listing-search-item__link listing-search-item__link--title" data-action="click-&gt;listing-search-item#onClick" href="/appartement-te-huur/groningen/a7292593/hereweg">
+            
+            Appartement Hereweg
+
+                            </a>
+</h2>, <h2 class="listing-search-item__title">
+<a class="listing-search-item__link listing-search-item__link--title" data-action="click-&gt;listing-search-item#onClick" href="/appartement-te-huur/groningen/a3184e46/van-oldenbarneveltlaan">
+            
+            Appartement Van Oldenbarneveltlaan
+
+                            </a>
+</h2>, <h2 class="listing-search-item__title">
+<a class="listing-search-item__link listing-search-item__link--title" data-action="click-&gt;listing-search-item#onClick" href="/appartement-te-huur/groningen/18f01fc5/kleine-kromme-elleboog">
+            
+            Appartement Kleine Kromme Elleboog 3 a
+
+                            </a>
+</h2>, <h2 class="listing-search-item__title">
+<a class="listing-search-item__link listing-search-item__link--title" data-action="click-&gt;listing-search-item#onClick" href="/huis-te-huur/groningen/39d36269/chopinlaan">
+            
+            Huis Chopinlaan 57
+
+                            </a>
+</h2>, <h2 class="listing-search-item__title">
+<a class="listing-search-item__link listing-search-item__link--title" data-action="click-&gt;listing-search-item#onClick" href="/appartement-te-huur/groningen/68ad653e/spieghelstraat">
+            
+            Appartement Spieghelstraat
+
+                            </a>
+</h2>, <h2 class="listing-search-item__title">
+<a class="listing-search-item__link listing-search-item__link--title" data-action="click-&gt;listing-search-item#onClick" href="/huis-te-huur/groningen/c952e0d3/sweelincklaan">
+            
+            Huis Sweelincklaan
+
+                            </a>
+</h2>, <h2 class="listing-search-item__title">
+<a class="listing-search-item__link listing-search-item__link--title" data-action="click-&gt;listing-search-item#onClick" href="/appartement-te-huur/groningen/f6df5d1c/petrus-campersingel">
+            
+            Appartement Petrus Campersingel
+
+                            </a>
+</h2>]
