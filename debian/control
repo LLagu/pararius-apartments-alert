@@ -1,0 +1,12 @@
+Source: pararius-apartments-alert
+Section: python
+Priority: extra
+Maintainer: Luca Lagunas <lagunasluca@protonmail.com>
+Build-Depends: debhelper (>= 9), python3.8 (>= 3.8.17), dh-virtualenv (>= 0.8)
+Standards-Version: 3.9.5
+
+Package: pararius-apartments-alert
+Architecture: any
+Pre-Depends: dpkg (>= 1.16.1), python3.8, ${misc:Pre-Depends}
+Depends: ${misc:Depends}
+Description: Scraper and notification app for newly posted pararius.nl properties 
