@@ -37,9 +37,14 @@ def find_new_apartments(old_vacancies, updated_vacancies):
     if updated_vacancies and updated_vacancies[-1] not in old_vacancies:
         updated_vacancies = updated_vacancies[:-1]
 
+    # print("-------------------------------------------------------")
+    # print("old = ", old_vacancies[0].find('a').get_text(strip=True))
+    # print("new = ", updated_vacancies[0].find('a').get_text(strip=True))
+    # print("-------------------------------------------------------")
     new_apartments = set(updated_vacancies) - set(old_vacancies)
     
     for property in new_apartments:
+        # print("property = ", property)
         name = property.find('a').get_text(strip=True)
         href = property.find('a')['href']
         ret.append((name, "https://www.pararius.nl" + href))
@@ -52,25 +57,31 @@ def ParsePage(p_userUrl, p_messageToTheBroker):
     print("Getting the page source")
     page_source = GetPageSource(p_userUrl)
     soup = BeautifulSoup(page_source, 'html.parser')
-    res = soup.find_all("h2", {"class": "listing-search-item__title"})
+    old_res = soup.find_all("h2", {"class": "listing-search-item__title"})
 
     TEST_i = 0
+    DEBUG_state_index = 0
 
     while True:
-        current_res = res
+        
 
         page_source = GetPageSource(p_userUrl)
         soup = BeautifulSoup(page_source, 'html.parser')
-        res = soup.find_all("h2", {"class": "listing-search-item__title"})
+        # res = soup.find_all("h2", {"class": "listing-search-item__title"})
+        current_res = soup.find_all("h2", {"class": "listing-search-item__title"})
 
-        if res:
-  
+        if current_res:
+            # print("Still running. Check #", DEBUG_state_index)
+            # DEBUG_state_index += 1
             if TEST_i == 0:
                 print("Looking for changes. Stand by and wait for a notification")
                 TEST_i += 1
             
-            new_apartments = find_new_apartments(res, current_res)
+            new_apartments = find_new_apartments(old_res, current_res)
             if (not new_apartments):
+                # loop = asyncio.get_event_loop()
+                # loop.run_until_complete(sendTelegramNotification(["test1", "no new partments"], p_messageToTheBroker))
+                old_res = current_res
                 time.sleep(25)
             else:
                 #send notification
@@ -81,4 +92,5 @@ def ParsePage(p_userUrl, p_messageToTheBroker):
                 print('Nieuwe aanbieding gedetecteerd')
                 print(p_userUrl)
 
+                old_res = current_res
                 time.sleep(25)
