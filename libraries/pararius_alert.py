@@ -1,6 +1,3 @@
-from libraries.setup import *
-from libraries.install_dependencies import *
-
 from bs4 import BeautifulSoup
 import time
 import telegram_send
@@ -9,27 +6,45 @@ from selenium.webdriver.firefox.options import Options
 import warnings
 import asyncio
 
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+
+
 def GetPageSource(p_userUrl):
     options = Options()
     options.add_argument('--ignore-certificate-errors')
     options.add_argument('--incognito')
     options.add_argument('--headless')
     with warnings.catch_warnings():
-        warnings.filterwarnings("ignore",category=DeprecationWarning)
+        warnings.filterwarnings("ignore", category=DeprecationWarning)
         driver = webdriver.Firefox(options=options)
-    driver.get(p_userUrl)
-    #TODO: eventually replace the sleep with a control that lets the function proceed once
-    # the page is fully loaded
-    time.sleep(5)
-    pageSource = driver.page_source
-    driver.close()
+    
+    try:
+        driver.set_page_load_timeout(60)
+        driver.get(p_userUrl)
+
+        WebDriverWait(driver, 60).until(EC.presence_of_element_located((By.CLASS_NAME, 'listing-search-item__title')))
+        WebDriverWait(driver, 60).until(EC.presence_of_element_located((By.XPATH, '//body[not(@class="loading")]')))
+
+        pageSource = driver.page_source
+    except Exception as e:
+        print(f"Failed to retrieve page source. Please check your connection..Error during page navigation: {e}")
+
+        sendTelegramNotification([], "Failed to retrieve page source. Please check your connection.")
+        pageSource = None
+
+    finally:
+        driver.quit()
+    
     return pageSource
 
-async def sendTelegramNotification(p_apartmentsList, p_messageToTheBroker):
+
+async def sendTelegramNotification(p_apartmentsList, p_extraMessage):
         for property in p_apartmentsList:
-            #By using the *property syntax, you are unpacking the elements of the property list, and they will be passed as separate arguments to the send function.
+            #By using the *property syntax, it unpacks the elements of the property list, and they will be passed as separate arguments to the send function.
             await telegram_send.send(messages=[("New property: ", *property)])
-        await telegram_send.send(messages=[(p_messageToTheBroker)])
+        await telegram_send.send(messages=[(p_extraMessage)])
 
 def find_new_apartments(old_vacancies, updated_vacancies):
     ret = []
@@ -37,7 +52,7 @@ def find_new_apartments(old_vacancies, updated_vacancies):
     if updated_vacancies and updated_vacancies[-1] not in old_vacancies:
         updated_vacancies = updated_vacancies[:-1]
 
-    # print("-------------------------------------------------------")
+    # print("------------------------DEBUG--------------------------")
     # print("old = ", old_vacancies[0].find('a').get_text(strip=True))
     # print("new = ", updated_vacancies[0].find('a').get_text(strip=True))
     # print("-------------------------------------------------------")
