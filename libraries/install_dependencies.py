@@ -8,3 +8,5 @@ def InstallDependencies():
     libraries = ['bs4', 'selenium', 'webdriver-manager','gtts', 'telegram_send', 'pysimplegui']
     for package in libraries:
         install(package)
+
+InstallDependencies()

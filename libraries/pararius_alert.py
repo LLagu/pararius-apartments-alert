@@ -1,4 +1,3 @@
-from libraries.setup import *
 from libraries.install_dependencies import *
 
 from bs4 import BeautifulSoup
@@ -9,21 +8,36 @@ from selenium.webdriver.firefox.options import Options
 import warnings
 import asyncio
 
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+
+
 def GetPageSource(p_userUrl):
     options = Options()
     options.add_argument('--ignore-certificate-errors')
     options.add_argument('--incognito')
     options.add_argument('--headless')
     with warnings.catch_warnings():
-        warnings.filterwarnings("ignore",category=DeprecationWarning)
+        warnings.filterwarnings("ignore", category=DeprecationWarning)
         driver = webdriver.Firefox(options=options)
-    driver.get(p_userUrl)
-    #TODO: eventually replace the sleep with a control that lets the function proceed once
-    # the page is fully loaded
-    time.sleep(5)
-    pageSource = driver.page_source
-    driver.close()
+    
+    try:
+        # Set a longer timeout for page navigation (e.g., 60 seconds)
+        driver.set_page_load_timeout(60)
+        driver.get(p_userUrl)
+
+        # Wait for the presence of an element with a specific class (adjust as needed)
+        # WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.CLASS_NAME, 'listing-search-item__title')))
+        WebDriverWait(driver, 60).until(EC.presence_of_element_located((By.CLASS_NAME, 'listing-search-item__title')))
+        WebDriverWait(driver, 60).until(EC.presence_of_element_located((By.XPATH, '//body[not(@class="loading")]')))
+
+        pageSource = driver.page_source
+    finally:
+        driver.quit()
+    
     return pageSource
+
 
 async def sendTelegramNotification(p_apartmentsList, p_messageToTheBroker):
         for property in p_apartmentsList:
@@ -37,10 +51,10 @@ def find_new_apartments(old_vacancies, updated_vacancies):
     if updated_vacancies and updated_vacancies[-1] not in old_vacancies:
         updated_vacancies = updated_vacancies[:-1]
 
-    # print("-------------------------------------------------------")
-    # print("old = ", old_vacancies[0].find('a').get_text(strip=True))
-    # print("new = ", updated_vacancies[0].find('a').get_text(strip=True))
-    # print("-------------------------------------------------------")
+    print("------------------------DEBUG--------------------------")
+    print("old = ", old_vacancies[0].find('a').get_text(strip=True))
+    print("new = ", updated_vacancies[0].find('a').get_text(strip=True))
+    print("-------------------------------------------------------")
     new_apartments = set(updated_vacancies) - set(old_vacancies)
     
     for property in new_apartments:
