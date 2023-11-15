@@ -13,7 +13,6 @@ def main():
         [sg.Text('Enter URL:')],
         [url_input],
         [sg.Button('Parse', key='-PARSE-')],
-        [sg.Image(data=sg.DEFAULT_BASE64_LOADING_GIF, key='-LOADING-', visible=False)],
         [sg.Multiline(size=(60,15), font='Courier 8', expand_x=True, expand_y=True, write_only=True,
                                     reroute_stdout=True, reroute_stderr=True, echo_stdout_stderr=True, autoscroll=True, auto_refresh=True)],
     ]
@@ -37,7 +36,7 @@ def main():
     aboutLayout = [
         [sg.Text('Scraping and notification application for pararius.nl\n')],
         [sg.Text('Known issues and future updates:')],
-        [sg.Text('- Installation of the required python packages is manual or \nvia `install_dependencies.py`. Future updates will detect \nmissing libraries and install them automatically.\n')],
+        [sg.Text('- Installation of the required python packages is manual or via `install_dependencies.py`.\n Future updates will detect missing libraries and install them automatically.\n')],
         [sg.Text('- No cancel button implementation yet. The only way to not parse is to close the app')]
     ]
 

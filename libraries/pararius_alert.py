@@ -1,5 +1,3 @@
-from libraries.install_dependencies import *
-
 from bs4 import BeautifulSoup
 import time
 import telegram_send
@@ -23,27 +21,30 @@ def GetPageSource(p_userUrl):
         driver = webdriver.Firefox(options=options)
     
     try:
-        # Set a longer timeout for page navigation (e.g., 60 seconds)
         driver.set_page_load_timeout(60)
         driver.get(p_userUrl)
 
-        # Wait for the presence of an element with a specific class (adjust as needed)
-        # WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.CLASS_NAME, 'listing-search-item__title')))
         WebDriverWait(driver, 60).until(EC.presence_of_element_located((By.CLASS_NAME, 'listing-search-item__title')))
         WebDriverWait(driver, 60).until(EC.presence_of_element_located((By.XPATH, '//body[not(@class="loading")]')))
 
         pageSource = driver.page_source
+    except Exception as e:
+        print(f"Failed to retrieve page source. Please check your connection..Error during page navigation: {e}")
+
+        sendTelegramNotification([], "Failed to retrieve page source. Please check your connection.")
+        pageSource = None
+
     finally:
         driver.quit()
     
     return pageSource
 
 
-async def sendTelegramNotification(p_apartmentsList, p_messageToTheBroker):
+async def sendTelegramNotification(p_apartmentsList, p_extraMessage):
         for property in p_apartmentsList:
-            #By using the *property syntax, you are unpacking the elements of the property list, and they will be passed as separate arguments to the send function.
+            #By using the *property syntax, it unpacks the elements of the property list, and they will be passed as separate arguments to the send function.
             await telegram_send.send(messages=[("New property: ", *property)])
-        await telegram_send.send(messages=[(p_messageToTheBroker)])
+        await telegram_send.send(messages=[(p_extraMessage)])
 
 def find_new_apartments(old_vacancies, updated_vacancies):
     ret = []
@@ -51,10 +52,10 @@ def find_new_apartments(old_vacancies, updated_vacancies):
     if updated_vacancies and updated_vacancies[-1] not in old_vacancies:
         updated_vacancies = updated_vacancies[:-1]
 
-    print("------------------------DEBUG--------------------------")
-    print("old = ", old_vacancies[0].find('a').get_text(strip=True))
-    print("new = ", updated_vacancies[0].find('a').get_text(strip=True))
-    print("-------------------------------------------------------")
+    # print("------------------------DEBUG--------------------------")
+    # print("old = ", old_vacancies[0].find('a').get_text(strip=True))
+    # print("new = ", updated_vacancies[0].find('a').get_text(strip=True))
+    # print("-------------------------------------------------------")
     new_apartments = set(updated_vacancies) - set(old_vacancies)
     
     for property in new_apartments:
