@@ -21,17 +21,19 @@ def GetPageSource(p_userUrl):
         driver = webdriver.Firefox(options=options)
     
     try:
-        driver.set_page_load_timeout(60)
+        driver.set_page_load_timeout(120)
         driver.get(p_userUrl)
 
-        WebDriverWait(driver, 60).until(EC.presence_of_element_located((By.CLASS_NAME, 'listing-search-item__title')))
-        WebDriverWait(driver, 60).until(EC.presence_of_element_located((By.XPATH, '//body[not(@class="loading")]')))
+        WebDriverWait(driver, 120).until(EC.presence_of_element_located((By.CLASS_NAME, 'listing-search-item__title')))
+        WebDriverWait(driver, 120).until(EC.presence_of_element_located((By.XPATH, '//body[not(@class="loading")]')))
 
         pageSource = driver.page_source
     except Exception as e:
         print(f"Failed to retrieve page source. Please check your connection..Error during page navigation: {e}")
 
-        sendTelegramNotification([], "Failed to retrieve page source. Please check your connection.")
+        loop = asyncio.get_event_loop()
+        loop.run_until_complete(sendTelegramNotification([], "Failed to retrieve page source. Please check your connection."))
+        
         pageSource = None
 
     finally:
@@ -65,7 +67,7 @@ def find_new_apartments(old_vacancies, updated_vacancies):
         ret.append((name, "https://www.pararius.nl" + href))
     return ret
 
-def ParsePage(p_userUrl, p_messageToTheBroker):
+def ParsePage(p_userUrl, p_messageToTheBroker, p_sleepBetweenSearches):
     loop = asyncio.new_event_loop() 
     asyncio.set_event_loop(loop)
 
@@ -97,7 +99,7 @@ def ParsePage(p_userUrl, p_messageToTheBroker):
                 # loop = asyncio.get_event_loop()
                 # loop.run_until_complete(sendTelegramNotification(["test1", "no new partments"], p_messageToTheBroker))
                 old_res = current_res
-                time.sleep(25)
+                time.sleep(p_sleepBetweenSearches)
             else:
                 #send notification
                 loop = asyncio.get_event_loop()
@@ -108,4 +110,4 @@ def ParsePage(p_userUrl, p_messageToTheBroker):
                 print(p_userUrl)
 
                 old_res = current_res
-                time.sleep(25)
+                time.sleep(p_sleepBetweenSearches)
