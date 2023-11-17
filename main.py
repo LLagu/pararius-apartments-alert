@@ -8,10 +8,13 @@ def main():
 
     url_input = sg.InputText(key='-URL-', size=(60, 1))
     msg_input = [sg.Multiline(size=(60, 15), key='-MSG-', autoscroll=True, auto_refresh=True)]
+    delay_input = sg.Input(key='-DELAY-', size=(5,1))
 
     parseLayout = [
         [sg.Text('Enter URL:')],
         [url_input],
+        [sg.Text('Seconds between searches (default = 60) ')],
+        [delay_input],
         [sg.Button('Parse', key='-PARSE-')],
         [sg.Multiline(size=(60,15), font='Courier 8', expand_x=True, expand_y=True, write_only=True,
                                     reroute_stdout=True, reroute_stderr=True, echo_stdout_stderr=True, autoscroll=True, auto_refresh=True)],
@@ -77,8 +80,15 @@ def main():
                 msg = values['-MSG-']
                 storeFile('previousMsg.txt', msg)
 
+            delay = 60
+            if values['-DELAY-'] != '':
+                try:
+                    delay = int(values['-DELAY-'])
+                except ValueError:
+                    print("Invalid number entered, delay set to default value")
+
             if thread is None:
-                thread = Thread(target=ParsePage, args=(url, msg))
+                thread = Thread(target=ParsePage, args=(url, msg, delay))
                 thread.daemon = True
                 thread.start()
             
