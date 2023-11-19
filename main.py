@@ -27,7 +27,7 @@ def main():
         [sg.Text('If the system does not recognise the command add your Python\\Script to PATH')],
         [sg.Text('3. Copy and paste the token you received from BotFather in the terminal')],
         [sg.Text('4. Now you will receive a notification every time the parser detects a new accomodation')],
-        [sg.Text('Please visit the project\'s github page or the About section in the app to learn more about the app and it\'s limitations')]
+        [sg.Text('Please visit the project\'s github page or the About section in the app to learn more about the app and its limitations')]
     ]
 
     messageLayout = [
